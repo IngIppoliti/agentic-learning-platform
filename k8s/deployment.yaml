@@ -1,0 +1,162 @@
+# k8s/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: agentic-learning
+  labels:
+    name: agentic-learning
+
+---
+# k8s/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: agentic-learning
+data:
+  APP_NAME: "Agentic Learning AI Platform"
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"
+  API_V1_PREFIX: "/api/v1"
+
+---
+# k8s/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secrets
+  namespace: agentic-learning
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql://user:password@postgres:5432/agentic_learning"
+  REDIS_URL: "redis://redis:6379"
+  JWT_SECRET_KEY: "your-super-secret-jwt-key"
+  OPENAI_API_KEY: "your-openai-api-key"
+  ANTHROPIC_API_KEY: "your-anthropic-api-key"
+
+---
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentic-learning-api
+  namespace: agentic-learning
+  labels:
+    app: agentic-learning-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agentic-learning-api
+  template:
+    metadata:
+      labels:
+        app: agentic-learning-api
+    spec:
+      containers:
+      - name: api
+        image: agentic-learning:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secrets
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+      volumes:
+      - name: logs
+        emptyDir: {}
+
+---
+# k8s/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentic-learning-api-service
+  namespace: agentic-learning
+spec:
+  selector:
+    app: agentic-learning-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: ClusterIP
+
+---
+# k8s/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: agentic-learning-ingress
+  namespace: agentic-learning
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - api.agentic-learning.com
+    secretName: api-tls
+  rules:
+  - host: api.agentic-learning.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: agentic-learning-api-service
+            port:
+              number: 80
+
+---
+# k8s/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: agentic-learning-hpa
+  namespace: agentic-learning
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: agentic-learning-api
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

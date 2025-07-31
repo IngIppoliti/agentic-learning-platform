@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ServiceMonitor
+metadata:
+  name: agentic-learning-metrics
+  namespace: agentic-learning
+  labels:
+    app: agentic-learning-api
+spec:
+  selector:
+    matchLabels:
+      app: agentic-learning-api
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: agentic-learning-alerts
+  namespace: agentic-learning
+spec:
+  groups:
+  - name: agentic-learning.rules
+    rules:
+    - alert: HighErrorRate
+      expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "High error rate detected"
+        description: "Error rate is above 10% for 5 minutes"
+    
+    - alert: HighResponseTime
+      expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High response time detected"
+        description: "95th percentile response time is above 2 seconds"
+    
+    - alert: LowAgentAvailability
+      expr: up{job="agentic-learning-api"} < 0.8
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Low agent availability"
+        description: "Less than 80% of agents are available"

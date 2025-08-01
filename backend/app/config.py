@@ -43,6 +43,20 @@ class Settings(BaseSettings):
     openai_model: str = Field(default="gpt-4", description="Default OpenAI model")
     anthropic_model: str = Field(default="claude-3-sonnet-20240229", description="Default Anthropic model")
 
+    # LLM Model Settings  
+    OPENAI_MODEL: str = Field(default="gpt-4", description="Default OpenAI model")
+    ANTHROPIC_MODEL: str = Field(default="claude-3-sonnet-20240229", description="Default Anthropic model")
+    OPENAI_EMBEDDING_MODEL: str = Field(default="text-embedding-ada-002", description="OpenAI embedding model")
+    
+    # Gamification Settings
+    XP_MULTIPLIER_LESSON: float = Field(default=1.0, description="XP multiplier for lessons")
+    XP_MULTIPLIER_QUIZ: float = Field(default=1.5, description="XP multiplier for quizzes")
+    XP_MULTIPLIER_STREAK: float = Field(default=2.0, description="XP multiplier for streaks")
+    
+    # Vector Search Settings
+    VECTOR_SEARCH_TOP_K: int = Field(default=10, description="Default top K for vector search")
+    VECTOR_RERANK_ENABLED: bool = Field(default=True, description="Enable vector result reranking")
+
     # Pinecone Settings
     pinecone_api_key: str = Field(..., description="Pinecone API key")
     pinecone_environment: str = Field(..., description="Pinecone environment")

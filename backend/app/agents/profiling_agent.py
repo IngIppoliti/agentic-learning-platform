@@ -7,6 +7,7 @@ from app.services.llm_service import LLMService
 from app.models.profile import UserProfile
 from app.models.user import User
 from sqlalchemy.orm import Session
+from app.core.config import settings
 import asyncio
 
 logger = structlog.get_logger(__name__)
@@ -20,6 +21,7 @@ class ProfilingAgent(BaseAgent):
         super().__init__("profiling_agent", "1.0.0")
         self.llm_service = llm_service
         self.db_session = db_session
+        self.default_model = getattr(settings, 'OPENAI_MODEL', 'gpt-4-turbo')
         
         # Definisci capacità dell'agente
         self.capabilities = [
@@ -240,7 +242,7 @@ Fornisci analisi in JSON:
         
         response = await self.llm_service.generate_completion(
             prompt=prompt,
-            model="gpt-4-turbo",
+            model=self.default_model,
             temperature=0.3,
             max_tokens=1000
         )
@@ -267,7 +269,7 @@ Fornisci analisi in JSON:
         
         response = await self.llm_service.generate_completion(
             prompt=prompt,
-            model="gpt-4-turbo",
+            model=self.default_model,
             temperature=0.3,
             max_tokens=800
         )
@@ -301,7 +303,7 @@ Fornisci analisi in JSON:
         
         response = await self.llm_service.generate_completion(
             prompt=prompt,
-            model="gpt-4-turbo",
+            model=self.default_model,
             temperature=0.3,
             max_tokens=800
         )

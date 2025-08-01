@@ -50,4 +50,22 @@
     "load_achievements": "Impossibile caricare i traguardi",
     "load_stats": "Impossibile caricare le statistiche"
   }
+  {
+  "ai_messages": {
+    "fire_streak": "🔥 {{streak}} giorni consecutivi! Sei in fiamme! Continua così!",
+    "almost_done": "🎯 Quasi al traguardo! Manca poco per completare il percorso!",
+    "ready_to_learn": "✨ Pronto per imparare qualcosa di nuovo oggi?"
+  },
+  "actions": {
+    "daily_bonus": "+10 XP Daily Bonus",
+    "explore_paths": "Esplora Nuovi Percorsi",
+    "join_community": "Unisciti alla Community",
+    "customize": "Personalizza Esperienza",
+    "continue_learning": "Continua l'Apprendimento"
+  },
+  "motivational_quote": {
+    "text": "Il successo è la somma di piccoli sforzi ripetuti giorno dopo giorno.",
+    "author": "Robert Collier"
+  }
+}
 }

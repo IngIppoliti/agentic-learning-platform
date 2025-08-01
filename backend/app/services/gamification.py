@@ -1,5 +1,15 @@
 """
-Gamification Service - XP, Badges, Leaderboards
+Gamification Service - 
+
+XP, Badges, Leaderboards - Sistema completo per:
+
+⚡ XP System con multipliers e level calculation
+🏆 Badge System (Common, Rare, Epic, Legendary)
+🎯 Achievement System con prerequisiti
+📊 Leaderboards multipli (weekly, monthly, total)
+🔥 Streak Bonuses psychology-based
+🎮 Challenge Creation per community engagement
+
 """
 import asyncio
 from typing import Dict, Any, List, Optional, Tuple

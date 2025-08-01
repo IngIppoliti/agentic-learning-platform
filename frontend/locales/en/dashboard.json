@@ -1,0 +1,53 @@
+{
+  "title": "Dashboard",
+  "welcome_title": "{{greeting}}, {{name}}! 👋",
+  "welcome_subtitle": "Ready to continue your learning journey?",
+  "stats": {
+    "xp_today": "XP Today",
+    "lessons_completed": "Lessons Completed",
+    "streak_days": "Streak Days",
+    "total_xp": "Total XP",
+    "next_level": "Next Level",
+    "level_progress": "Level Progress"
+  },
+  "achievements": {
+    "title": "Your Achievements",
+    "unlocked": "{{count}} of {{total}} unlocked",
+    "categories": {
+      "all": "All categories",
+      "learning": "Learning",
+      "social": "Social",
+      "streak": "Streak",
+      "skill": "Skills",
+      "special": "Special"
+    },
+    "rarity": {
+      "common": "Common",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "stats_labels": {
+      "unlocked": "Unlocked",
+      "completion": "Completion",
+      "xp_earned": "Achievement XP",
+      "rarities": "Rarities"
+    }
+  },
+  "xp": {
+    "error": "Unable to load XP data",
+    "to_next_level": "{{xp}} XP to next level",
+    "periods": {
+      "today": "Today",
+      "week": "Week",
+      "month": "Month"
+    }
+  },
+  "ai_insights": {
+    "title": "💡 Personalized AI Insights"
+  },
+  "errors": {
+    "load_achievements": "Unable to load achievements",
+    "load_stats": "Unable to load statistics"
+  }
+}

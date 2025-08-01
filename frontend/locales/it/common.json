@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "Agentic Learning",
+    "tagline": "La tua crescita infinita"
+  },
   "greeting": {
     "morning": "Buongiorno",
     "afternoon": "Buon pomeriggio", 

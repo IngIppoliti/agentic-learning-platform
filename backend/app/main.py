@@ -9,7 +9,7 @@ from prometheus_client import make_asgi_app
 from app.core.config import settings
 from app.core.logging import configure_logging, RequestLoggingMiddleware
 from app.core.database import engine, Base
-from app.api.v1 import auth, users, agents
+from app.api.v1 import auth, users, agents,dashboard, learning, community
 from app.agents.orchestrator import MasterOrchestrator
 from app.agents.profiling_agent import ProfilingAgent
 from app.agents.learning_path_agent import LearningPathAgent
@@ -93,6 +93,9 @@ app.mount("/metrics", metrics_app)
 app.include_router(auth.router, prefix=f"{settings.API_V1_PREFIX}/auth", tags=["authentication"])
 app.include_router(users.router, prefix=f"{settings.API_V1_PREFIX}/users", tags=["users"])
 app.include_router(agents.router, prefix=f"{settings.API_V1_PREFIX}/agents", tags=["agents"])
+app.include_router(dashboard.router, prefix=f"{settings.API_V1_PREFIX}/dashboard", tags=["dashboard"])
+app.include_router(learning.router, prefix=f"{settings.API_V1_PREFIX}/learning", tags=["learning"])
+app.include_router(community.router, prefix=f"{settings.API_V1_PREFIX}/community", tags=["community"])
 
 @app.get("/")
 async def root():

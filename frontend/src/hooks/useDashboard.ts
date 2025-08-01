@@ -1,3 +1,4 @@
+// frontend/src/hooks/useDashboard.ts (la tua versione corretta)
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dashboardAPI, DashboardOverview, Achievement, UserProgress } from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -8,8 +9,9 @@ export const useDashboardOverview = () => {
     queryKey: ['dashboard', 'overview'],
     queryFn: dashboardAPI.getOverview,
     staleTime: 5 * 60 * 1000, // 5 minuti
-    cacheTime: 10 * 60 * 1000, // 10 minuti
+    gcTime: 10 * 60 * 1000, // 10 minuti (era cacheTime in v4)
     refetchOnWindowFocus: false,
+    retry: 2, // 🆕 Aggiungi retry logic
   });
 };
 
@@ -19,7 +21,9 @@ export const useXPDetails = () => {
     queryKey: ['dashboard', 'xp-details'],
     queryFn: dashboardAPI.getXPDetails,
     staleTime: 2 * 60 * 1000, // 2 minuti
+    gcTime: 5 * 60 * 1000, // 🔄 Aggiornato
     refetchOnWindowFocus: false,
+    retry: 2,
   });
 };
 
@@ -29,6 +33,8 @@ export const useAchievements = (params?: { show_locked?: boolean; category?: str
     queryKey: ['dashboard', 'achievements', params],
     queryFn: () => dashboardAPI.getAchievements(params),
     staleTime: 10 * 60 * 1000, // 10 minuti
+    gcTime: 15 * 60 * 1000, // 🔄 Aggiornato
+    retry: 2,
   });
 };
 
@@ -38,6 +44,8 @@ export const useWeeklyStats = (weeksBack: number = 4) => {
     queryKey: ['dashboard', 'weekly-stats', weeksBack],
     queryFn: () => dashboardAPI.getWeeklyStats(weeksBack),
     staleTime: 30 * 60 * 1000, // 30 minuti
+    gcTime: 60 * 60 * 1000, // 🔄 Aggiornato - 1 ora
+    retry: 2,
   });
 };
 
@@ -73,11 +81,22 @@ export const useDashboardData = () => {
     weeklyStats,
     isLoading: overview.isLoading || xpDetails.isLoading,
     isError: overview.isError || xpDetails.isError,
+    // 🆕 Aggiungi anche isSuccess per UX migliore
+    isSuccess: overview.isSuccess && xpDetails.isSuccess,
     refetchAll: () => {
       overview.refetch();
       xpDetails.refetch();
       achievements.refetch();
       weeklyStats.refetch();
     }
+  };
+};
+
+// 🆕 BONUS: Hook per invalidare cache dashboard
+export const useInvalidateDashboard = () => {
+  const queryClient = useQueryClient();
+  
+  return () => {
+    queryClient.invalidateQueries({ queryKey: ['dashboard'] });
   };
 };

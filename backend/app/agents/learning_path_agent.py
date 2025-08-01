@@ -7,6 +7,7 @@ from app.services.llm_service import LLMService
 from app.models.profile import UserProfile
 from app.models.learning_path import LearningPath
 from sqlalchemy.orm import Session
+from app.core.config import settings
 import asyncio
 import uuid
 
@@ -21,6 +22,8 @@ class LearningPathAgent(BaseAgent):
         super().__init__("learning_path_agent", "1.0.0")
         self.llm_service = llm_service
         self.db_session = db_session
+        self.default_openai_model = getattr(settings, 'OPENAI_MODEL', 'gpt-4-turbo')
+        self.default_anthropic_model = getattr(settings, 'ANTHROPIC_MODEL', 'claude-3-5-sonnet-20241022')
         
         self.capabilities = [
             "generate_learning_path",
@@ -285,7 +288,7 @@ Fornisci analisi in JSON:
             estimated_duration_hours=optimized_path["path_metadata"]["estimated_duration_hours"],
             modules=optimized_path["modules"],
             learning_objectives=optimized_path["path_metadata"]["learning_outcomes"],
-            generated_by_model="gpt-4-turbo",
+            generated_by_model=self.default_openai_model,
             confidence_score=optimized_path.get("confidence_score", 0.8),
             personalization_factors=optimized_path.get("personalization_factors", {})
         )
@@ -323,7 +326,7 @@ Fornisci analisi in JSON:
         
         response = await self.llm_service.generate_completion(
             prompt=prompt,
-            model="claude-3-5-sonnet-20241022",  # Claude è migliore per reasoning strutturato
+            model=self.default_anthropic_model,  # Claude è migliore per reasoning strutturato
             temperature=0.4,
             max_tokens=4000
         )

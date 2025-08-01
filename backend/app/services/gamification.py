@@ -105,10 +105,10 @@ class GamificationService:
 
     def __init__(self):
         self.xp_multipliers = {
-            "lesson_complete": 1.0,
-            "quiz_perfect": 1.5,
+            "lesson_complete": settings.XP_MULTIPLIER_LESSON,    # ← USA CONFIG!
+            "quiz_perfect": settings.XP_MULTIPLIER_QUIZ,         # ← USA CONFIG!
             "daily_goal": 1.2,
-            "streak_bonus": 2.0,
+            "streak_bonus": settings.XP_MULTIPLIER_STREAK,       # ← USA CONFIG!
             "first_try": 1.3
         }
 

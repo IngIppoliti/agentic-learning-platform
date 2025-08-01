@@ -27,6 +27,14 @@ class User(Base):
     # Relationships
     profile = relationship("UserProfile", back_populates="user", uselist=False)
     learning_paths = relationship("LearningPath", back_populates="user")
+    achievements = relationship("Achievement", back_populates="user")
+    progress = relationship("UserProgress", back_populates="user", uselist=False)
+    community_posts = relationship("CommunityPost", back_populates="author")
+    post_comments = relationship("PostComment", back_populates="author")
+    post_likes = relationship("PostLike", back_populates="user")
+    comment_likes = relationship("CommentLike", back_populates="user")
+    created_study_groups = relationship("StudyGroup", back_populates="creator")
+    study_groups = relationship("StudyGroup", secondary=user_study_groups, back_populates="members")
     
     def __repr__(self):
         return f"<User(email='{self.email}', username='{self.username}')>"

@@ -1,0 +1,23 @@
+{
+  "greeting": {
+    "morning": "Buongiorno",
+    "afternoon": "Buon pomeriggio", 
+    "evening": "Buonasera"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "learning": "Apprendimento",
+    "community": "Community",
+    "achievements": "Traguardi",
+    "settings": "Impostazioni"
+  },
+  "user": {
+    "level": "Livello",
+    "online": "Online",
+    "loading": "Caricamento...",
+    "logout": "Esci",
+    "logging_out": "Disconnessione..."
+  },
+  "search_placeholder": "Cerca corsi, utenti, argomenti...",
+  "welcome_message": "Pronto per continuare il tuo percorso di apprendimento?"
+}

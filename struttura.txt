@@ -29,6 +29,9 @@
                 v1/
                     agents.py
                     auth.py
+                    community.py
+                    dashboard.py
+                    learning.py
                     users.py
             core/
                 config.py
@@ -36,9 +39,14 @@
                 logging.py
                 security.py
                 __init__.py
+            db/
+                initial_data.py
             models/
+                achievement.py
+                community.py
                 learning_path.py
                 profile.py
+                progress.py
                 user.py
                 __init__.py
             services/
@@ -52,7 +60,16 @@
             test_api.py
     frontend/
         Dockerfile
+        next-i18next.config.js
+        next.config.js
         package.json
+        locales/
+            en/
+                common.json
+                dashboard.json
+            it/
+                common.json
+                dashboard.json
         src/
             app/
                 page.tsx
@@ -62,6 +79,8 @@
                     register/
                         page.tsx
                 dashboard/
+                    page.tsx
+                dashboard-vprod/
                     page.tsx
             components/
                 dashboard/
@@ -87,8 +106,16 @@
                     Button.tsx
                     Card.tsx
                     Inputs.tsx
+            hooks/
+                useAuth.ts
+                useDashboard.ts
+                useLearning.ts
             lib/
                 api.ts
+                types.ts
+                utils.ts
+            pages/
+                _app.tsx
             store/
                 authStore.ts
                 gamificationStore.ts

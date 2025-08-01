@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { useAchievements } from '@/hooks/useDashboard';
 import { 
   Trophy, 
   Star, 
@@ -13,38 +16,224 @@ import {
   Award,
   Sparkles,
   Lock,
-  Unlock
+  Unlock,
+  BookOpen,
+  MessageCircle,
+  Calendar,
+  TrendingUp,
+  Heart,
+  Shield,
+  Gem,
+  RefreshCw
 } from 'lucide-react';
 
-interface Achievement {
+// 🎯 MAPPING ICON NAMES TO COMPONENTS
+const iconMap: Record<string, React.ComponentType<any>> = {
+  '🏆': Trophy,
+  '⭐': Star,
+  '👑': Crown,
+  '⚡': Zap,
+  '🎯': Target,
+  '🔥': Flame,
+  '🧠': Brain,
+  '👥': Users,
+  '⏰': Clock,
+  '🥇': Award,
+  '✨': Sparkles,
+  '🔒': Lock,
+  '🔓': Unlock,
+  '📚': BookOpen,
+  '💬': MessageCircle,
+  '📅': Calendar,
+  '📈': TrendingUp,
+  '❤️': Heart,
+  '🛡️': Shield,
+  '💎': Gem,
+  // Fallback icons
+  'trophy': Trophy,
+  'star': Star,
+  'crown': Crown,
+  'zap': Zap,
+  'target': Target,
+  'flame': Flame,
+  'brain': Brain,
+  'users': Users,
+  'clock': Clock,
+  'award': Award,
+  'sparkles': Sparkles,
+  'book': BookOpen,
+  'message': MessageCircle,
+  'calendar': Calendar,
+  'trending': TrendingUp,
+  'heart': Heart,
+  'shield': Shield,
+  'gem': Gem
+};
+
+interface ExtendedAchievement {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<any>; // Converted from API
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   unlocked: boolean;
   progress?: number;
   maxProgress?: number;
   unlockedAt?: Date;
   category: string;
+  xp_reward?: number;
+  badge_color?: string;
 }
 
 interface AchievementWallProps {
-  achievements: Achievement[];
+  showLocked?: boolean;
+  categories?: string[];
+  limit?: number;
   className?: string;
+  onAchievementUnlock?: (achievement: ExtendedAchievement) => void;
 }
 
 const AchievementWall: React.FC<AchievementWallProps> = ({
-  achievements,
-  className = ""
+  showLocked = true,
+  categories = [],
+  limit,
+  className = "",
+  onAchievementUnlock
 }) => {
-  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
+  const [selectedAchievement, setSelectedAchievement] = useState<ExtendedAchievement | null>(null);
   const [filter, setFilter] = useState<string>('all');
   const [showUnlockAnimation, setShowUnlockAnimation] = useState<string | null>(null);
+  const [previousUnlockedCount, setPreviousUnlockedCount] = useState(0);
+  
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  // Configurazioni rarità
+  // 🔄 FETCH ACHIEVEMENTS FROM API
+  const { data: achievementsData, isLoading, isError, refetch } = useAchievements({
+    show_locked: showLocked,
+    category: filter !== 'all' ? filter : undefined
+  });
+
+  // 🎨 LOADING STATE
+  if (isLoading) {
+    return (
+      <div className={`${className}`}>
+        <div className="bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gray-700 rounded-full animate-pulse"></div>
+              <div>
+                <div className="w-32 h-6 bg-gray-700 rounded animate-pulse mb-2"></div>
+                <div className="w-24 h-4 bg-gray-700 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+            {[...Array(16)].map((_, i) => (
+              <div key={i} className="w-24 h-24 bg-gray-700/50 rounded-2xl animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ❌ ERROR STATE
+  if (isError || !achievementsData) {
+    return (
+      <div className={`${className}`}>
+        <div className="bg-red-900/80 backdrop-blur-xl border border-red-500/30 rounded-2xl p-6 shadow-2xl text-center">
+          <Trophy className="h-12 w-12 mx-auto mb-4 text-red-400 opacity-50" />
+          <p className="text-lg font-semibold text-white mb-2">Errore caricamento achievement</p>
+          <button 
+            onClick={() => refetch()}
+            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors flex items-center space-x-2 mx-auto"
+          >
+            <RefreshCw className="h-4 w-4" />
+            <span>Riprova</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔄 CONVERT API DATA TO COMPONENT FORMAT
+  const convertAchievementsFromAPI = (): ExtendedAchievement[] => {
+    const allAchievements = [...achievementsData.unlocked, ...achievementsData.locked, ...achievementsData.in_progress];
+    
+    return allAchievements.map(apiAchievement => {
+      // Convert badge_icon (emoji/string) to React component
+      const getIconComponent = (iconString: string): React.ComponentType<any> => {
+        // Try direct emoji match first
+        if (iconMap[iconString]) {
+          return iconMap[iconString];
+        }
+        
+        // Try to extract icon name from emoji or description
+        const iconName = iconString.toLowerCase().replace(/[^\w]/g, '');
+        
+        // Map common patterns
+        if (iconString.includes('🏆') || iconName.includes('trophy')) return Trophy;
+        if (iconString.includes('⭐') || iconName.includes('star')) return Star;
+        if (iconString.includes('🔥') || iconName.includes('fire')) return Flame;
+        if (iconString.includes('🎯') || iconName.includes('target')) return Target;
+        if (iconString.includes('📚') || iconName.includes('book')) return BookOpen;
+        if (iconString.includes('⚡') || iconName.includes('zap')) return Zap;
+        if (iconString.includes('🧠') || iconName.includes('brain')) return Brain;
+        if (iconString.includes('👥') || iconName.includes('users')) return Users;
+        if (iconString.includes('💎') || iconName.includes('gem')) return Gem;
+        
+        // Default fallback based on category
+        switch (apiAchievement.category) {
+          case 'learning': return BookOpen;
+          case 'social': return Users;
+          case 'streak': return Flame;
+          case 'milestone': return Trophy;
+          case 'special': return Crown;
+          default: return Award;
+        }
+      };
+
+      return {
+        id: apiAchievement.id,
+        title: apiAchievement.title,
+        description: apiAchievement.description || '',
+        icon: getIconComponent(apiAchievement.badge_icon || '🏆'),
+        rarity: apiAchievement.rarity as 'common' | 'rare' | 'epic' | 'legendary',
+        unlocked: apiAchievement.is_unlocked,
+        progress: apiAchievement.progress_current,
+        maxProgress: apiAchievement.progress_required,
+        unlockedAt: apiAchievement.unlocked_at ? new Date(apiAchievement.unlocked_at) : undefined,
+        category: apiAchievement.category,
+        xp_reward: apiAchievement.xp_reward,
+        badge_color: apiAchievement.badge_color
+      };
+    });
+  };
+
+  const achievements = convertAchievementsFromAPI();
+
+  // 🎉 DETECT NEW ACHIEVEMENTS UNLOCKED
+  useEffect(() => {
+    const currentUnlockedCount = achievements.filter(a => a.unlocked).length;
+    
+    if (previousUnlockedCount > 0 && currentUnlockedCount > previousUnlockedCount) {
+      // New achievement unlocked!
+      const newlyUnlocked = achievements.find((a, index) => 
+        a.unlocked && index >= previousUnlockedCount
+      );
+      
+      if (newlyUnlocked) {
+        handleUnlock(newlyUnlocked.id);
+        onAchievementUnlock?.(newlyUnlocked);
+      }
+    }
+    
+    setPreviousUnlockedCount(currentUnlockedCount);
+  }, [achievements, previousUnlockedCount, onAchievementUnlock]);
+
+  // 🎨 CONFIGURAZIONI RARITÀ (manteniamo le tue originali)
   const rarityConfig = {
     common: {
       gradient: 'from-gray-400 to-gray-600',
@@ -76,19 +265,34 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
     }
   };
 
-  // Filtri disponibili
-  const categories = ['all', ...Array.from(new Set(achievements.map(a => a.category)))];
-  const filteredAchievements = achievements.filter(
-    a => filter === 'all' || a.category === filter
-  );
+  // 🔍 Filtri disponibili (dalle API + filtri custom)
+  const availableCategories = ['all', ...achievementsData.categories];
+  const categoriesToShow = categories.length > 0 
+    ? ['all', ...categories.filter(c => availableCategories.includes(c))]
+    : availableCategories;
 
-  // Animazione unlock
+  const filteredAchievements = achievements.filter(a => {
+    // Filtro categoria
+    if (filter !== 'all' && a.category !== filter) return false;
+    
+    // Filtro categorie specifiche se fornite
+    if (categories.length > 0 && !categories.includes(a.category)) return false;
+    
+    return true;
+  });
+
+  // Applica limite se specificato
+  const displayAchievements = limit 
+    ? filteredAchievements.slice(0, limit)
+    : filteredAchievements;
+
+  // 🎬 Animazione unlock (manteniamo la tua)
   const handleUnlock = (achievementId: string) => {
     setShowUnlockAnimation(achievementId);
     setTimeout(() => setShowUnlockAnimation(null), 3000);
   };
 
-  // Componente Particella
+  // ✨ Componente Particella (manteniamo la tua)
   const Particle = ({ color, delay }: { color: string; delay: number }) => (
     <motion.div
       className={`absolute w-1 h-1 ${color} rounded-full`}
@@ -113,8 +317,8 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
     />
   );
 
-  // Componente Badge Achievement
-  const AchievementBadge = ({ achievement, index }: { achievement: Achievement; index: number }) => {
+  // 🏆 Componente Badge Achievement (manteniamo la tua con dati API)
+  const AchievementBadge = ({ achievement, index }: { achievement: ExtendedAchievement; index: number }) => {
     const config = rarityConfig[achievement.rarity];
     const Icon = achievement.icon;
     const progressPercentage = achievement.progress && achievement.maxProgress 
@@ -165,7 +369,7 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
                 whileHover={{ rotate: [0, -10, 10, 0] }}
                 transition={{ duration: 0.5 }}
               >
-                <Icon className={`h-8 w-8 text-white`} />
+                <Icon className="h-8 w-8 text-white" />
               </motion.div>
             ) : (
               <Lock className="h-8 w-8 text-gray-500" />
@@ -173,7 +377,7 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
           </div>
 
           {/* Barra di progresso per achievement non completati */}
-          {!achievement.unlocked && achievement.progress !== undefined && (
+          {!achievement.unlocked && achievement.progress !== undefined && achievement.maxProgress && (
             <div className="absolute bottom-1 left-1 right-1 h-1 bg-gray-700 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-blue-400 to-purple-500"
@@ -181,6 +385,13 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
                 animate={{ width: `${progressPercentage}%` }}
                 transition={{ duration: 1, delay: index * 0.1 }}
               />
+            </div>
+          )}
+
+          {/* XP Reward indicator */}
+          {achievement.xp_reward && achievement.xp_reward > 0 && achievement.unlocked && (
+            <div className="absolute top-1 left-1 px-1 py-0.5 bg-green-500/80 text-white text-xs font-bold rounded">
+              +{achievement.xp_reward}
             </div>
           )}
 
@@ -196,7 +407,7 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
           </div>
         </div>
 
-        {/* Tooltip al hover */}
+        {/* Tooltip al hover (manteniamo il tuo) */}
         <AnimatePresence>
           <motion.div
             className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-gray-900/95 backdrop-blur-xl border border-gray-700/50 rounded-lg p-3 min-w-48 z-20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
@@ -210,13 +421,20 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
             {achievement.unlocked ? (
               <div className="flex items-center text-xs text-green-400">
                 <Unlock className="h-3 w-3 mr-1" />
-                Sbloccato {achievement.unlockedAt?.toLocaleDateString()}
+                Sbloccato {achievement.unlockedAt?.toLocaleDateString('it-IT')}
               </div>
             ) : (
               <div className="text-xs text-gray-400">
                 {achievement.progress !== undefined && achievement.maxProgress && (
                   <span>{achievement.progress}/{achievement.maxProgress}</span>
                 )}
+              </div>
+            )}
+
+            {/* XP Reward */}
+            {achievement.xp_reward && achievement.xp_reward > 0 && (
+              <div className="text-xs text-green-400 mt-1">
+                +{achievement.xp_reward} XP
               </div>
             )}
 
@@ -249,7 +467,7 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
       >
-        {/* Header */}
+        {/* Header con statistiche dalle API */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             <motion.div
@@ -261,19 +479,15 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
             <div>
               <h3 className="text-2xl font-bold text-white">Bacheca Successi</h3>
               <p className="text-gray-400">
-                {achievements.filter(a => a.unlocked).length}/{achievements.length} sbloccati
+                {achievementsData.stats.unlocked_count}/{achievementsData.stats.total_achievements} sbloccati
+                ({achievementsData.stats.completion_percentage.toFixed(1)}%)
               </p>
             </div>
           </div>
 
-          {/* Statistiche rapide */}
+          {/* Statistiche rarità dalle API */}
           <div className="flex space-x-4">
-            {Object.entries(
-              achievements.reduce((acc, a) => {
-                if (a.unlocked) acc[a.rarity] = (acc[a.rarity] || 0) + 1;
-                return acc;
-              }, {} as Record<string, number>)
-            ).map(([rarity, count]) => (
+            {Object.entries(achievementsData.rarities).map(([rarity, count]) => (
               <div key={rarity} className="text-center">
                 <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${rarityConfig[rarity as keyof typeof rarityConfig].gradient} flex items-center justify-center mx-auto mb-1`}>
                   <span className="text-xs font-bold text-white">{count}</span>
@@ -284,9 +498,9 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
           </div>
         </div>
 
-        {/* Filtri */}
+        {/* Filtri (manteniamo i tuoi) */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {categories.map((category) => (
+          {categoriesToShow.map((category) => (
             <motion.button
               key={category}
               onClick={() => setFilter(category)}
@@ -298,14 +512,14 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {category === 'all' ? 'Tutti' : category}
+              {category === 'all' ? 'Tutti' : category.charAt(0).toUpperCase() + category.slice(1)}
             </motion.button>
           ))}
         </div>
 
         {/* Griglia Achievement */}
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
-          {filteredAchievements.map((achievement, index) => (
+          {displayAchievements.map((achievement, index) => (
             <AchievementBadge
               key={achievement.id}
               achievement={achievement}
@@ -314,7 +528,16 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
           ))}
         </div>
 
-        {/* Progress Summary */}
+        {/* Empty state */}
+        {displayAchievements.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            <Trophy className="h-16 w-16 mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessun achievement trovato</p>
+            <p className="text-sm">Prova a modificare i filtri o inizia a imparare per sbloccare i tuoi primi achievement!</p>
+          </div>
+        )}
+
+        {/* Progress Summary con dati API */}
         <motion.div
           className="mt-6 p-4 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 rounded-xl"
           initial={{ opacity: 0, y: 20 }}
@@ -325,12 +548,12 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
             <div>
               <h4 className="text-lg font-semibold text-white mb-1">Progresso Totale</h4>
               <p className="text-indigo-300 text-sm">
-                Continua così per sbloccare nuovi achievement!
+                Hai guadagnato {achievementsData.stats.total_achievement_xp} XP dagli achievement!
               </p>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-white">
-                {Math.round((achievements.filter(a => a.unlocked).length / achievements.length) * 100)}%
+                {achievementsData.stats.completion_percentage.toFixed(0)}%
               </div>
               <div className="text-sm text-indigo-300">Completato</div>
             </div>
@@ -340,16 +563,14 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
             <motion.div
               className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
               initial={{ width: 0 }}
-              animate={{ 
-                width: `${(achievements.filter(a => a.unlocked).length / achievements.length) * 100}%`
-              }}
+              animate={{ width: `${achievementsData.stats.completion_percentage}%` }}
               transition={{ duration: 2, delay: 1 }}
             />
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Modal dettaglio achievement */}
+      {/* Modal dettaglio achievement (manteniamo il tuo) */}
       <AnimatePresence>
         {selectedAchievement && (
           <motion.div
@@ -378,10 +599,17 @@ const AchievementWall: React.FC<AchievementWallProps> = ({
                   {selectedAchievement.rarity.toUpperCase()}
                 </div>
 
+                {/* XP Reward */}
+                {selectedAchievement.xp_reward && selectedAchievement.xp_reward > 0 && (
+                  <div className="mb-4 p-2 bg-green-500/20 border border-green-500/30 rounded-lg">
+                    <div className="text-green-400 font-semibold">+{selectedAchievement.xp_reward} XP</div>
+                  </div>
+                )}
+
                 {selectedAchievement.unlocked ? (
                   <div className="text-green-400 flex items-center justify-center">
                     <Unlock className="h-4 w-4 mr-2" />
-                    Sbloccato il {selectedAchievement.unlockedAt?.toLocaleDateString()}
+                    Sbloccato il {selectedAchievement.unlockedAt?.toLocaleDateString('it-IT')}
                   </div>
                 ) : (
                   <div className="text-gray-400">

@@ -30,6 +30,7 @@ from enum import Enum
 import logging
 import json
 import numpy as np
+from app.core.config import settings
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -44,7 +45,7 @@ class VectorNamespace(Enum):
 class VectorQuery:
     text: str
     namespace: VectorNamespace
-    top_k: int = 10
+    top_k: int = settings.VECTOR_SEARCH_TOP_K
     filter_metadata: Optional[Dict[str, Any]] = None
     include_metadata: bool = True
     include_values: bool = False
@@ -227,11 +228,15 @@ class VectorService:
         namespace: VectorNamespace,
         keyword_filters: Optional[List[str]] = None,
         metadata_filters: Optional[Dict[str, Any]] = None,
-        top_k: int = 10,
-        rerank: bool = True
+        top_k: int = None,
+        rerank: bool = None
     ) -> VectorSearchResponse:
         """Ricerca ibrida che combina semantic search e filtri"""
         try:
+                
+            top_k = top_k or settings.VECTOR_SEARCH_TOP_K
+            rerank = rerank if rerank is not None else settings.VECTOR_RERANK_ENABLED
+            
             # Costruisci filtri combinati
             combined_filters = {}
 

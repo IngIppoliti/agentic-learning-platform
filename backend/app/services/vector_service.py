@@ -1,6 +1,16 @@
+
+
 """
-Vector Service - Pinecone RAG Implementation
+Pinecone RAG Implementation - Sistema completo per:
+
+🔍 Semantic Search con OpenAI embeddings
+📊 Hybrid Search con filtri metadata
+🔄 Batch Operations per performance
+🎯 Content Similarity matching
+📈 Reranking intelligente dei risultati
+⚡ Namespaces per organizzazione (courses, content, skills, profiles)
 """
+
 import asyncio
 import openai
 import pinecone

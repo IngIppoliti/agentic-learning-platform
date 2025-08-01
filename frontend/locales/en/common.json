@@ -1,0 +1,23 @@
+{
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "learning": "Learning",
+    "community": "Community", 
+    "achievements": "Achievements",
+    "settings": "Settings"
+  },
+  "user": {
+    "level": "Level",
+    "online": "Online",
+    "loading": "Loading...",
+    "logout": "Logout",
+    "logging_out": "Logging out..."
+  },
+  "search_placeholder": "Search courses, users, topics...",
+  "welcome_message": "Ready to continue your learning journey?"
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Dashboard",
+  "welcome_title": "{{greeting}}, {{name}}! 👋",
+  "welcome_subtitle": "Pronto per continuare il tuo percorso di apprendimento?",
+  "stats": {
+    "xp_today": "XP Oggi",
+    "lessons_completed": "Lezioni Completate", 
+    "streak_days": "Streak Giorni",
+    "total_xp": "XP Totali",
+    "next_level": "Prossimo Livello",
+    "level_progress": "Progresso Livello"
+  },
+  "achievements": {
+    "title": "I Tuoi Traguardi",
+    "unlocked": "{{count}} di {{total}} sbloccati",
+    "categories": {
+      "all": "Tutte le categorie",
+      "learning": "Apprendimento",
+      "social": "Sociale", 
+      "streak": "Streak",
+      "skill": "Competenze",
+      "special": "Speciali"
+    },
+    "rarity": {
+      "common": "Comune",
+      "rare": "Raro", 
+      "epic": "Epico",
+      "legendary": "Leggendario"
+    },
+    "stats_labels": {
+      "unlocked": "Sbloccati",
+      "completion": "Completamento",
+      "xp_earned": "XP Traguardi",
+      "rarities": "Rarità"
+    }
+  },
+  "xp": {
+    "error": "Impossibile caricare i dati XP",
+    "to_next_level": "{{xp}} XP al prossimo livello",
+    "periods": {
+      "today": "Oggi",
+      "week": "Settimana", 
+      "month": "Mese"
+    }
+  },
+  "ai_insights": {
+    "title": "💡 Insight AI Personalizzati"
+  },
+  "errors": {
+    "load_achievements": "Impossibile caricare i traguardi",
+    "load_stats": "Impossibile caricare le statistiche"
+  }
+}

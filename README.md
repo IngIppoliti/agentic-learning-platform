@@ -1,174 +1,212 @@
-🤖 AI Learning Platform
-Platform Status Version License Build Coverage
+# 🤖 **AI Learning Platform**
 
-Piattaforma AI Educativa Multi-Agent con sistema di apprendimento personalizzato, gamification avanzata e intelligence di mercato.
+![Platform Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Build](https://img.shields.io/badge/Build-Passing-success)
+![Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen)
 
-📑 Indice
-Overview
-Features
-Architecture
-Tech Stack
-Installation
-Configuration
-Usage
-API Documentation
-AI Agents
-Frontend Components
-Database Schema
-Deployment
-Contributing
-Troubleshooting
-License
-🎯 Overview
+**Piattaforma AI Educativa Multi-Agent** con sistema di apprendimento personalizzato, gamification avanzata e intelligence di mercato.
+
+---
+
+## 📑 **Indice**
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [AI Agents](#ai-agents)
+- [Frontend Components](#frontend-components)
+- [Database Schema](#database-schema)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
+
+---
+
+## 🎯 **Overview**
+
 AI Learning Platform è una piattaforma educativa avanzata che utilizza un'architettura multi-agent per fornire esperienze di apprendimento personalizzate. Il sistema combina intelligenza artificiale, gamification e analytics per creare percorsi di apprendimento adattivi e coinvolgenti.
 
-Obiettivi Chiave:
-🎯 Personalizzazione - Percorsi di apprendimento adattivi per ogni utente
-🤖 AI-Powered - 8 agenti specializzati coordinati da un Master Orchestrator
-🎮 Gamification - Sistema XP, badges, achievements e leaderboards
-📊 Analytics - Tracking progresso e insights predittivi
-🌐 Community - Social learning e collaborazione
-✨ Features
-🤖 Sistema Multi-Agent
-8 Agenti AI Specializzati coordinati da Master Orchestrator
-Profilazione Utente automatica con skill assessment
-Generazione Learning Path personalizzati
-Content Curation con sistema RAG
-Progress Tracking con analytics predittive
-Motivation Coaching psychology-based
-Industry Intelligence per trend e opportunità carriera
-Assessment Adattivo con quiz dinamici
-🎮 Gamification Avanzata
-Sistema XP con multipliers configurabili
-4 Livelli Achievement (Common, Rare, Epic, Legendary)
-Streak Tracking con bonus psychology-based
-Leaderboards multipli (Weekly, Monthly, Total)
-Challenge System per community engagement
-📊 Analytics & Insights
-Real-time Progress tracking
-Learning Patterns recognition
-Performance Prediction con ML
-Personalized Recommendations basate su behavior
-Industry Trends integration
-🎨 Frontend Spettacolare
-30+ Componenti React con animazioni Framer Motion
-Dashboard Interattivo con visualizzazioni avanzate
-Mobile-First Design responsive
-Real-time Updates con WebSocket
-Dark/Light Mode support
-🏗️ Architecture
-Frontend Next.js
+### **Obiettivi Chiave:**
+- 🎯 **Personalizzazione** - Percorsi di apprendimento adattivi per ogni utente
+- 🤖 **AI-Powered** - 8 agenti specializzati coordinati da un Master Orchestrator
+- 🎮 **Gamification** - Sistema XP, badges, achievements e leaderboards
+- 📊 **Analytics** - Tracking progresso e insights predittivi
+- 🌐 **Community** - Social learning e collaborazione
 
-FastAPI Gateway
+---
 
-Master Orchestrator
+## ✨ **Features**
 
-Profiling Agent
+### **🤖 Sistema Multi-Agent**
+- **8 Agenti AI Specializzati** coordinati da Master Orchestrator
+- **Profilazione Utente** automatica con skill assessment
+- **Generazione Learning Path** personalizzati
+- **Content Curation** con sistema RAG
+- **Progress Tracking** con analytics predittive
+- **Motivation Coaching** psychology-based
+- **Industry Intelligence** per trend e opportunità carriera
+- **Assessment Adattivo** con quiz dinamici
 
-Learning Path Agent
+### **🎮 Gamification Avanzata**
+- **Sistema XP** con multipliers configurabili
+- **4 Livelli Achievement** (Common, Rare, Epic, Legendary)
+- **Streak Tracking** con bonus psychology-based
+- **Leaderboards** multipli (Weekly, Monthly, Total)
+- **Challenge System** per community engagement
 
-Content Curator Agent
+### **📊 Analytics & Insights**
+- **Real-time Progress** tracking
+- **Learning Patterns** recognition
+- **Performance Prediction** con ML
+- **Personalized Recommendations** basate su behavior
+- **Industry Trends** integration
 
-Progress Tracker Agent
+### **🎨 Frontend Spettacolare**
+- **30+ Componenti React** con animazioni Framer Motion
+- **Dashboard Interattivo** con visualizzazioni avanzate
+- **Mobile-First Design** responsive
+- **Real-time Updates** con WebSocket
+- **Dark/Light Mode** support
 
-Motivation Coach Agent
+---
 
-Industry Intelligence Agent
+## 🏗️ **Architecture**
 
-Assessment Agent
+```mermaid
+graph TB
+    UI[Frontend Next.js] --> API[FastAPI Gateway]
+    API --> MO[Master Orchestrator]
+    
+    MO --> PA[Profiling Agent]
+    MO --> LPA[Learning Path Agent]
+    MO --> CCA[Content Curator Agent]
+    MO --> PTA[Progress Tracker Agent]
+    MO --> MCA[Motivation Coach Agent]
+    MO --> IIA[Industry Intelligence Agent]
+    MO --> AA[Assessment Agent]
+    
+    PA --> DB[(PostgreSQL)]
+    LPA --> DB
+    CCA --> VDB[(Pinecone)]
+    PTA --> REDIS[(Redis)]
+    
+    API --> LLM[OpenAI/Anthropic]
+    CCA --> LLM
+    VDB --> LLM
+```
 
-PostgreSQL
+### **Componenti Principali:**
 
-Pinecone
+#### **🎭 Master Orchestrator**
+- Coordinamento centrale di tutti gli agenti
+- Routing intelligente dei messaggi
+- Monitoring sistema e health checks
+- Workflow orchestration
 
-Redis
+#### **👤 Profiling Agent**
+- Analisi skill e competenze utente
+- Learning style detection
+- Goal extraction e mapping
+- Personality assessment
 
-OpenAI/Anthropic
+#### **🛤️ Learning Path Agent**
+- Generazione percorsi personalizzati
+- Ottimizzazione sequenze di apprendimento
+- Milestone definition e tracking
+- Adaptive path adjustment
 
-Copy
-Componenti Principali:
-🎭 Master Orchestrator
-Coordinamento centrale di tutti gli agenti
-Routing intelligente dei messaggi
-Monitoring sistema e health checks
-Workflow orchestration
-👤 Profiling Agent
-Analisi skill e competenze utente
-Learning style detection
-Goal extraction e mapping
-Personality assessment
-🛤️ Learning Path Agent
-Generazione percorsi personalizzati
-Ottimizzazione sequenze di apprendimento
-Milestone definition e tracking
-Adaptive path adjustment
-📚 Content Curator Agent
-RAG system per content discovery
-Recommendation engine avanzato
-Content quality scoring
-Personalization algorithms
-📊 Progress Tracker Agent
-Analytics progresso real-time
-Learning patterns recognition
-Performance insights e trends
-Predictive success modeling
-🏃‍♂️ Motivation Coach Agent
-Psychology-based motivation strategies
-Personalized encouragement system
-Streak management e habit formation
-Adaptive coaching interventions
-🏢 Industry Intelligence Agent
-Market trends analysis
-Job market insights real-time
-Skill demand forecasting
-Career path recommendations
-📝 Assessment Agent
-Dynamic quiz generation
-Adaptive testing algorithms
-Skill gap identification
-Competency mapping
-🛠️ Tech Stack
-Backend
-Framework: FastAPI 0.104+
-Database: PostgreSQL 15+
-Cache: Redis 7+
-Vector DB: Pinecone
-ORM: SQLAlchemy 2.0 (Async)
-Migration: Alembic
-Validation: Pydantic 2.0
-Logging: Structlog
-Monitoring: Prometheus + Grafana
-AI/ML
-LLM: OpenAI GPT-4 + Anthropic Claude
-Embeddings: OpenAI text-embedding-ada-002
-Vector Search: Pinecone similarity search
-NLP: spaCy + NLTK
-ML: scikit-learn + pandas
-Frontend
-Framework: Next.js 14 + React 18
-Language: TypeScript 5+
-Styling: Tailwind CSS 3.4
-Animations: Framer Motion 10+
-State: React Context + Zustand
-Forms: React Hook Form + Zod
-Icons: Lucide React
-Charts: Recharts + Chart.js
-DevOps
-Containerization: Docker + Docker Compose
-Reverse Proxy: Nginx
-Process Manager: PM2
-CI/CD: GitHub Actions
-Cloud: AWS/GCP/Azure ready
-Monitoring: Sentry + DataDog
-🚀 Installation
-Prerequisites
-Node.js 18+
-Python 3.11+
-PostgreSQL 15+
-Redis 7+
-Docker (optional)
-Quick Start
-Copy# 1. Clone repository
+#### **📚 Content Curator Agent**
+- RAG system per content discovery
+- Recommendation engine avanzato
+- Content quality scoring
+- Personalization algorithms
+
+#### **📊 Progress Tracker Agent**
+- Analytics progresso real-time
+- Learning patterns recognition
+- Performance insights e trends
+- Predictive success modeling
+
+#### **🏃‍♂️ Motivation Coach Agent**
+- Psychology-based motivation strategies
+- Personalized encouragement system
+- Streak management e habit formation
+- Adaptive coaching interventions
+
+#### **🏢 Industry Intelligence Agent**
+- Market trends analysis
+- Job market insights real-time
+- Skill demand forecasting
+- Career path recommendations
+
+#### **📝 Assessment Agent**
+- Dynamic quiz generation
+- Adaptive testing algorithms
+- Skill gap identification
+- Competency mapping
+
+---
+
+## 🛠️ **Tech Stack**
+
+### **Backend**
+- **Framework**: FastAPI 0.104+
+- **Database**: PostgreSQL 15+ 
+- **Cache**: Redis 7+
+- **Vector DB**: Pinecone
+- **ORM**: SQLAlchemy 2.0 (Async)
+- **Migration**: Alembic
+- **Validation**: Pydantic 2.0
+- **Logging**: Structlog
+- **Monitoring**: Prometheus + Grafana
+
+### **AI/ML**
+- **LLM**: OpenAI GPT-4 + Anthropic Claude
+- **Embeddings**: OpenAI text-embedding-ada-002
+- **Vector Search**: Pinecone similarity search
+- **NLP**: spaCy + NLTK
+- **ML**: scikit-learn + pandas
+
+### **Frontend**
+- **Framework**: Next.js 14 + React 18
+- **Language**: TypeScript 5+
+- **Styling**: Tailwind CSS 3.4
+- **Animations**: Framer Motion 10+
+- **State**: React Context + Zustand
+- **Forms**: React Hook Form + Zod
+- **Icons**: Lucide React
+- **Charts**: Recharts + Chart.js
+
+### **DevOps**
+- **Containerization**: Docker + Docker Compose
+- **Reverse Proxy**: Nginx
+- **Process Manager**: PM2
+- **CI/CD**: GitHub Actions
+- **Cloud**: AWS/GCP/Azure ready
+- **Monitoring**: Sentry + DataDog
+
+---
+
+## 🚀 **Installation**
+
+### **Prerequisites**
+- Node.js 18+ 
+- Python 3.11+
+- PostgreSQL 15+
+- Redis 7+
+- Docker (optional)
+
+### **Quick Start**
+
+```bash
+# 1. Clone repository
 git clone https://github.com/IngIppoliti/agentic-learning-platform.git
 cd agentic-learning-platform
 
@@ -201,18 +239,29 @@ uvicorn app.main:app --reload
 # Terminal 2 - Frontend  
 cd frontend
 npm run dev
-Docker Setup
-Copy# Build and start all services
+```
+
+### **Docker Setup**
+
+```bash
+# Build and start all services
 docker-compose up --build
 
 # Access application
 # Frontend: http://localhost:3000
 # Backend API: http://localhost:8000
 # API Docs: http://localhost:8000/docs
-⚙️ Configuration
-Environment Variables
-Create .env file in root directory:
+```
 
+---
+
+## ⚙️ **Configuration**
+
+### **Environment Variables**
+
+Create `.env` file in root directory:
+
+```env
 # App Settings
 APP_NAME="AI Learning Platform"
 VERSION="1.0.0"
@@ -248,18 +297,29 @@ BACKEND_CORS_ORIGINS=["http://localhost:3000"]
 
 # Monitoring
 SENTRY_DSN="your-sentry-dsn"
-Configuration Management
+```
+
+### **Configuration Management**
+
 The platform uses Pydantic Settings for type-safe configuration:
 
-Copyfrom app.core.config import settings
+```python
+from app.core.config import settings
 
 # Access configuration
 model = settings.OPENAI_MODEL
 db_url = settings.DATABASE_URL
-📖 Usage
-API Examples
-User Authentication
-Copy# Register new user
+```
+
+---
+
+## 📖 **Usage**
+
+### **API Examples**
+
+#### **User Authentication**
+```bash
+# Register new user
 curl -X POST "http://localhost:8000/api/v1/auth/register" \
   -H "Content-Type: application/json" \
   -d '{
@@ -275,8 +335,11 @@ curl -X POST "http://localhost:8000/api/v1/auth/login" \
     "email": "user@example.com", 
     "password": "secure_password"
   }'
-Generate Learning Path
-Copycurl -X POST "http://localhost:8000/api/v1/learning/generate-path" \
+```
+
+#### **Generate Learning Path**
+```bash
+curl -X POST "http://localhost:8000/api/v1/learning/generate-path" \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -286,11 +349,18 @@ Copycurl -X POST "http://localhost:8000/api/v1/learning/generate-path" \
     "current_skills": ["HTML", "CSS"],
     "preferred_style": "visual"
   }'
-Get Dashboard Data
-Copycurl -X GET "http://localhost:8000/api/v1/dashboard/overview" \
+```
+
+#### **Get Dashboard Data**
+```bash
+curl -X GET "http://localhost:8000/api/v1/dashboard/overview" \
   -H "Authorization: Bearer YOUR_TOKEN"
-Frontend Usage
-Copy// Initialize learning path
+```
+
+### **Frontend Usage**
+
+```typescript
+// Initialize learning path
 import { useLearningPath } from '@/hooks/useLearningPath'
 
 export function LearningDashboard() {
@@ -316,17 +386,27 @@ export function LearningDashboard() {
     </div>
   )
 }
-📡 API Documentation
-Endpoints Overview
-Category	Endpoints	Description
-Auth	4	Authentication & user management
-Dashboard	8	User analytics, XP, achievements
-Learning	10	Paths, content, assessments
-Community	12	Social features, posts, groups
-Agents	6	Direct agent interactions
-Total	40	Complete API coverage
-Dashboard API
-Copy// Get user dashboard overview
+```
+
+---
+
+## 📡 **API Documentation**
+
+### **Endpoints Overview**
+
+| Category | Endpoints | Description |
+|----------|-----------|-------------|
+| **Auth** | 4 | Authentication & user management |
+| **Dashboard** | 8 | User analytics, XP, achievements |
+| **Learning** | 10 | Paths, content, assessments |
+| **Community** | 12 | Social features, posts, groups |
+| **Agents** | 6 | Direct agent interactions |
+| **Total** | **40** | Complete API coverage |
+
+### **Dashboard API**
+
+```typescript
+// Get user dashboard overview
 GET /api/v1/dashboard/overview
 Response: {
   user: UserProfile,
@@ -356,8 +436,12 @@ Response: {
   progress: AchievementProgress[],
   totalBadges: number
 }
-Learning API
-Copy// Generate personalized learning path
+```
+
+### **Learning API**
+
+```typescript
+// Generate personalized learning path
 POST /api/v1/learning/generate-path
 Body: {
   goal: string,
@@ -381,8 +465,12 @@ Response: {
   personalized: Content[],
   similarUsers: Content[]
 }
-Community API
-Copy// Get community feed
+```
+
+### **Community API**
+
+```typescript
+// Get community feed
 GET /api/v1/community/feed
 Response: {
   posts: Post[],
@@ -397,9 +485,16 @@ Body: {
   type: "achievement" | "question" | "tip",
   tags: string[]
 }
-🤖 AI Agents
-Agent Communication Protocol
-Copy# Agent Message Structure
+```
+
+---
+
+## 🤖 **AI Agents**
+
+### **Agent Communication Protocol**
+
+```python
+# Agent Message Structure
 @dataclass
 class AgentMessage:
     message_type: str
@@ -417,8 +512,12 @@ class AgentResponse:
     execution_time: float
     next_actions: List[str]
     metadata: Dict[str, Any]
-Using Agents Directly
-Copy# Direct agent usage
+```
+
+### **Using Agents Directly**
+
+```python
+# Direct agent usage
 from app.services.llm_service import LLMService
 from app.agents.profiling_agent import ProfilingAgent
 
@@ -433,15 +532,25 @@ message = AgentMessage(
 )
 
 response = await profiling_agent.process(message)
-Agent Capabilities Matrix
-Agent	Profiling	Learning Paths	Content	Progress	Motivation	Industry	Assessment
-Skill Analysis	✅	✅	✅	✅	❌	❌	✅
-Content Recommendation	❌	✅	✅	✅	✅	✅	❌
-Progress Tracking	❌	✅	❌	✅	✅	❌	✅
-Personalization	✅	✅	✅	✅	✅	❌	✅
-Market Intelligence	❌	✅	✅	❌	❌	✅	❌
-🎨 Frontend Components
-Component Architecture
+```
+
+### **Agent Capabilities Matrix**
+
+| Agent | Profiling | Learning Paths | Content | Progress | Motivation | Industry | Assessment |
+|-------|-----------|----------------|---------|----------|------------|----------|------------|
+| **Skill Analysis** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
+| **Content Recommendation** | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Progress Tracking** | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ |
+| **Personalization** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Market Intelligence** | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
+
+---
+
+## 🎨 **Frontend Components**
+
+### **Component Architecture**
+
+```
 src/
 ├── components/
 │   ├── ui/                    # Base components
@@ -471,9 +580,13 @@ src/
 │       ├── CommentSection.tsx
 │       ├── UserProfile.tsx
 │       └── StudyGroup.tsx
-Key Components
-XP Counter
-Copyinterface XPCounterProps {
+```
+
+### **Key Components**
+
+#### **XP Counter**
+```typescript
+interface XPCounterProps {
   currentXP: number
   nextLevelXP: number
   level: number
@@ -485,8 +598,11 @@ Copyinterface XPCounterProps {
 export function XPCounter({ currentXP, nextLevelXP, level, ... }: XPCounterProps) {
   // Animated XP counter with particles and level up celebrations
 }
-Skill Radar
-Copyinterface SkillRadarProps {
+```
+
+#### **Skill Radar**
+```typescript
+interface SkillRadarProps {
   skills: Skill[]
   selectedSkills?: string[]
   onSkillSelect?: (skillId: string) => void
@@ -496,10 +612,14 @@ Copyinterface SkillRadarProps {
 export function SkillRadar({ skills, ... }: SkillRadarProps) {
   // Interactive SVG radar chart with smooth animations
 }
-Animation System
+```
+
+### **Animation System**
+
 All components use Framer Motion for smooth animations:
 
-Copyimport { motion, AnimatePresence } from 'framer-motion'
+```typescript
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function AnimatedComponent() {
   return (
@@ -513,9 +633,16 @@ export function AnimatedComponent() {
     </motion.div>
   )
 }
-🗄️ Database Schema
-Core Tables
-Copy-- Users table
+```
+
+---
+
+## 🗄️ **Database Schema**
+
+### **Core Tables**
+
+```sql
+-- Users table
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -591,15 +718,23 @@ CREATE TABLE user_progress (
     last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-Relationships Diagram
+```
+
+### **Relationships Diagram**
+
+```
 Users (1) ←→ (1) UserProfiles
 Users (1) ←→ (*) LearningPaths  
 Users (1) ←→ (*) Achievements
 Users (1) ←→ (1) UserProgress
 Users (1) ←→ (*) CommunityPosts
 Users (1) ←→ (*) StudyGroups
-Indexes
-Copy-- Performance indexes
+```
+
+### **Indexes**
+
+```sql
+-- Performance indexes
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_user_profiles_user_id ON user_profiles(user_id);
 CREATE INDEX idx_learning_paths_user_id ON learning_paths(user_id);
@@ -610,9 +745,16 @@ CREATE INDEX idx_user_progress_user_id ON user_progress(user_id);
 -- GIN indexes for JSONB columns
 CREATE INDEX idx_user_profiles_skills ON user_profiles USING GIN(current_skills);
 CREATE INDEX idx_learning_paths_modules ON learning_paths USING GIN(modules);
-🚀 Deployment
-Docker Production Setup
-Copy# docker-compose.prod.yml
+```
+
+---
+
+## 🚀 **Deployment**
+
+### **Docker Production Setup**
+
+```yaml
+# docker-compose.prod.yml
 version: '3.8'
 
 services:
@@ -674,8 +816,12 @@ services:
 volumes:
   postgres_data:
   redis_data:
-Environment-Specific Configs
-Copy# Production deployment
+```
+
+### **Environment-Specific Configs**
+
+```bash
+# Production deployment
 make deploy-production
 
 # Staging deployment  
@@ -683,10 +829,14 @@ make deploy-staging
 
 # Local development
 make dev
-CI/CD Pipeline
+```
+
+### **CI/CD Pipeline**
+
 GitHub Actions workflow:
 
-Copy# .github/workflows/deploy.yml
+```yaml
+# .github/workflows/deploy.yml
 name: Deploy to Production
 
 on:
@@ -710,8 +860,12 @@ jobs:
       - name: Deploy to Production
         run: |
           make deploy-production
-Monitoring Setup
-Copy# monitoring/docker-compose.yml
+```
+
+### **Monitoring Setup**
+
+```yaml
+# monitoring/docker-compose.yml
 version: '3.8'
 
 services:
@@ -733,11 +887,18 @@ services:
 
 volumes:
   grafana_data:
-🤝 Contributing
+```
+
+---
+
+## 🤝 **Contributing**
+
 We welcome contributions! Please follow these guidelines:
 
-Development Setup
-Copy# 1. Fork the repository
+### **Development Setup**
+
+```bash
+# 1. Fork the repository
 # 2. Clone your fork
 git clone https://github.com/yourusername/agentic-learning-platform.git
 
@@ -749,28 +910,40 @@ git commit -m "Add amazing feature"
 
 # 5. Push and create PR
 git push origin feature/amazing-feature
-Code Style
-Backend: Follow PEP 8, use Black formatter
-Frontend: Follow Airbnb style guide, use Prettier
-Commits: Use conventional commits format
-Tests: Maintain >90% coverage
-Pull Request Process
-Update documentation for any new features
-Add tests for new functionality
-Ensure CI passes all checks
-Get approval from 2+ maintainers
-Squash merge when ready
-Issue Templates
-Use our issue templates for:
+```
 
-🐛 Bug reports
-✨ Feature requests
-📚 Documentation improvements
-❓ Questions and support
-🔧 Troubleshooting
-Common Issues
-Database Connection Issues
-Copy# Check PostgreSQL is running
+### **Code Style**
+
+- **Backend**: Follow PEP 8, use Black formatter
+- **Frontend**: Follow Airbnb style guide, use Prettier
+- **Commits**: Use conventional commits format
+- **Tests**: Maintain >90% coverage
+
+### **Pull Request Process**
+
+1. **Update documentation** for any new features
+2. **Add tests** for new functionality  
+3. **Ensure CI passes** all checks
+4. **Get approval** from 2+ maintainers
+5. **Squash merge** when ready
+
+### **Issue Templates**
+
+Use our issue templates for:
+- 🐛 Bug reports
+- ✨ Feature requests  
+- 📚 Documentation improvements
+- ❓ Questions and support
+
+---
+
+## 🔧 **Troubleshooting**
+
+### **Common Issues**
+
+#### **Database Connection Issues**
+```bash
+# Check PostgreSQL is running
 docker ps | grep postgres
 
 # Check connection
@@ -778,24 +951,33 @@ psql -h localhost -U ai_learning_user -d ai_learning_db
 
 # Reset database
 make db-reset
-Frontend Build Issues
-Copy# Clear node modules and reinstall
+```
+
+#### **Frontend Build Issues**
+```bash
+# Clear node modules and reinstall
 rm -rf node_modules package-lock.json
 npm install
 
 # Clear Next.js cache
 rm -rf .next
 npm run build
-API Key Issues
-Copy# Verify environment variables
+```
+
+#### **API Key Issues**
+```bash
+# Verify environment variables
 echo $OPENAI_API_KEY
 echo $ANTHROPIC_API_KEY
 
 # Test API connectivity
 curl -H "Authorization: Bearer $OPENAI_API_KEY" \
   https://api.openai.com/v1/models
-Agent Communication Issues
-Copy# Check Redis connection
+```
+
+#### **Agent Communication Issues**
+```bash
+# Check Redis connection
 redis-cli ping
 
 # Monitor agent logs
@@ -803,9 +985,13 @@ docker logs -f ai-platform-backend
 
 # Debug agent responses
 make debug-agents
-Performance Issues
-Database Optimization
-Copy-- Analyze slow queries
+```
+
+### **Performance Issues**
+
+#### **Database Optimization**
+```sql
+-- Analyze slow queries
 EXPLAIN ANALYZE SELECT * FROM learning_paths WHERE user_id = '...';
 
 -- Update statistics
@@ -813,8 +999,11 @@ ANALYZE;
 
 -- Reindex if needed
 REINDEX INDEX idx_learning_paths_user_id;
-Frontend Performance
-Copy# Analyze bundle size
+```
+
+#### **Frontend Performance**
+```bash
+# Analyze bundle size
 npm run analyze
 
 # Check for memory leaks
@@ -822,9 +1011,13 @@ npm run dev:memory
 
 # Optimize images
 npm run optimize-images
-Logging & Debugging
-Backend Logs
-Copyimport structlog
+```
+
+### **Logging & Debugging**
+
+#### **Backend Logs**
+```python
+import structlog
 logger = structlog.get_logger(__name__)
 
 # Log levels
@@ -832,45 +1025,69 @@ logger.debug("Debug message")
 logger.info("Info message")  
 logger.warning("Warning message")
 logger.error("Error message")
-Agent Debugging
-Copy# Enable agent debug mode
+```
+
+#### **Agent Debugging**
+```python
+# Enable agent debug mode
 export AGENT_DEBUG=true
 
 # Monitor agent interactions
 tail -f logs/agents.log
-📊 Performance Metrics
-System Requirements
-Component	Minimum	Recommended
-CPU	2 cores	4 cores
-RAM	4GB	8GB
-Storage	20GB	50GB
-Network	10Mbps	100Mbps
-Performance Benchmarks
-Metric	Target	Current
-API Response Time	<200ms	150ms
-Database Queries	<50ms	35ms
-Frontend Load	<2s	1.5s
-Agent Processing	<5s	3.2s
-Uptime	99.9%	99.95%
-🗺️ Roadmap
-Version 1.1 (Q2 2024)
- Mobile app (React Native)
- Voice interaction with agents
- Advanced analytics dashboard
- Offline learning support
-Version 1.2 (Q3 2024)
- Multi-language support
- Enterprise features
- Advanced AI tutoring
- Integration marketplace
-Version 2.0 (Q4 2024)
- VR/AR learning experiences
- Blockchain certificates
- Advanced AI models
- Global learning network
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+```
 
+---
+
+## 📊 **Performance Metrics**
+
+### **System Requirements**
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| **CPU** | 2 cores | 4 cores |
+| **RAM** | 4GB | 8GB |
+| **Storage** | 20GB | 50GB |
+| **Network** | 10Mbps | 100Mbps |
+
+### **Performance Benchmarks**
+
+| Metric | Target | Current |
+|--------|--------|---------|
+| **API Response Time** | <200ms | 150ms |
+| **Database Queries** | <50ms | 35ms |
+| **Frontend Load** | <2s | 1.5s |
+| **Agent Processing** | <5s | 3.2s |
+| **Uptime** | 99.9% | 99.95% |
+
+---
+
+## 🗺️ **Roadmap**
+
+### **Version 1.1 (Q2 2024)**
+- [ ] Mobile app (React Native)
+- [ ] Voice interaction with agents
+- [ ] Advanced analytics dashboard
+- [ ] Offline learning support
+
+### **Version 1.2 (Q3 2024)**  
+- [ ] Multi-language support
+- [ ] Enterprise features
+- [ ] Advanced AI tutoring
+- [ ] Integration marketplace
+
+### **Version 2.0 (Q4 2024)**
+- [ ] VR/AR learning experiences
+- [ ] Blockchain certificates
+- [ ] Advanced AI models
+- [ ] Global learning network
+
+---
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
 MIT License
 
 Copyright (c) 2024 AI Learning Platform
@@ -892,44 +1109,65 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-🙏 Credits & Acknowledgments
-Core Team
-Lead Developer: Your Name
-AI Architecture: GPT-4 + Claude-3.5 Sonnet
-UI/UX Design: Custom design system
-Technologies Used
-FastAPI - Modern Python web framework
-Next.js - React framework for production
-PostgreSQL - Advanced open source database
-Redis - In-memory data structure store
-Pinecone - Vector database for AI
-OpenAI - GPT models and embeddings
-Anthropic - Claude models for reasoning
-Framer Motion - Animation library
-Tailwind CSS - Utility-first CSS framework
-Special Thanks
-OpenAI team for GPT models
-Anthropic team for Claude models
-Pinecone team for vector database
-Open source community
-📞 Support & Contact
-Documentation
-API Docs: https://your-domain.com/docs
-User Guide: https://your-domain.com/guide
-Developer Docs: https://your-domain.com/dev-docs
-Community
-Discord: Join our community
-GitHub Discussions: Ask questions
-Twitter: @AILearningPlatform
-Enterprise Support
+```
+
+---
+
+## 🙏 **Credits & Acknowledgments**
+
+### **Core Team**
+- **Lead Developer**: [Your Name](https://github.com/IngIppoliti)
+- **AI Architecture**: GPT-4 + Claude-3.5 Sonnet
+- **UI/UX Design**: Custom design system
+
+### **Technologies Used**
+- **FastAPI** - Modern Python web framework
+- **Next.js** - React framework for production
+- **PostgreSQL** - Advanced open source database
+- **Redis** - In-memory data structure store
+- **Pinecone** - Vector database for AI
+- **OpenAI** - GPT models and embeddings
+- **Anthropic** - Claude models for reasoning
+- **Framer Motion** - Animation library
+- **Tailwind CSS** - Utility-first CSS framework
+
+### **Special Thanks**
+- OpenAI team for GPT models
+- Anthropic team for Claude models
+- Pinecone team for vector database
+- Open source community
+
+---
+
+## 📞 **Support & Contact**
+
+### **Documentation**
+- **API Docs**: [https://your-domain.com/docs](https://your-domain.com/docs)
+- **User Guide**: [https://your-domain.com/guide](https://your-domain.com/guide)
+- **Developer Docs**: [https://your-domain.com/dev-docs](https://your-domain.com/dev-docs)
+
+### **Community**
+- **Discord**: [Join our community](https://discord.gg/ai-learning)
+- **GitHub Discussions**: [Ask questions](https://github.com/IngIppoliti/agentic-learning-platform/discussions)
+- **Twitter**: [@AILearningPlatform](https://twitter.com/ailearningplatform)
+
+### **Enterprise Support**
 For enterprise support and custom implementations:
+- **Email**: enterprise@ailearningplatform.com
+- **Calendar**: [Book a demo](https://calendly.com/ailearningplatform)
 
-Email: enterprise@ailearningplatform.com
-Calendar: Book a demo
-⭐ Star this repo if you find it helpful!
+---
 
-🔗 Website • 📚 Documentation • 💬 Discord • 🐦 Twitter
+<div align="center">
 
-Made with ❤️ by the AI Learning Platform team
+**⭐ Star this repo if you find it helpful!**
 
-💡 Pro Tip: Check out our Getting Started Guide for a quick setup walkthrough!
+[🔗 Website](https://your-domain.com) • [📚 Documentation](https://docs.your-domain.com) • [💬 Discord](https://discord.gg/ai-learning) • [🐦 Twitter](https://twitter.com/ailearningplatform)
+
+**Made with ❤️ by the AI Learning Platform team**
+
+</div>
+
+---
+
+**💡 Pro Tip**: Check out our [Getting Started Guide](GETTING_STARTED.md) for a quick setup walkthrough!

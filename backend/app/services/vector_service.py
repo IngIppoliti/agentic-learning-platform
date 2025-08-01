@@ -9,6 +9,16 @@ Pinecone RAG Implementation - Sistema completo per:
 🎯 Content Similarity matching
 📈 Reranking intelligente dei risultati
 ⚡ Namespaces per organizzazione (courses, content, skills, profiles)
+
+
+Vector Service Features:
+Multi-provider support (OpenAI embeddings)
+Advanced filtering con metadata
+Intelligent reranking con freshness bonus
+Batch processing per scalabilità
+Error handling robusto
+Performance metrics con timing
+
 """
 
 import asyncio

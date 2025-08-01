@@ -20,6 +20,11 @@ class LLMService:
         # Configurazione client
         self.openai_client = openai.AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         self.anthropic_client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
+
+        # Usa file di config per prendere i modelli altrienti il terzo parametro è il defualt
+        self.default_openai_model = getattr(settings, 'OPENAI_MODEL', 'gpt-4-turbo')
+        self.default_anthropic_model = getattr(settings, 'ANTHROPIC_MODEL', 'claude-3-5-sonnet-20241022')
+        self.default_embedding_model = getattr(settings, 'OPENAI_EMBEDDING_MODEL', 'text-embedding-ada-002')
         
         # Configurazione modelli
         self.model_configs = {
@@ -71,7 +76,7 @@ class LLMService:
     async def generate_completion(
         self,
         prompt: str,
-        model: str = "gpt-4-turbo",
+        model: str = None,
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         system_prompt: Optional[str] = None,
@@ -82,6 +87,7 @@ class LLMService:
         Genera completion con retry automatico e caching
         """
         start_time = datetime.now()
+        model = model or self.default_openai_model
         
         # Controlla cache
         if cache_key and cache_key in self.response_cache:
@@ -283,7 +289,7 @@ class LLMService:
             }
         }
         
-        return recommendations.get(task_type, {}).get(complexity, "gpt-4-turbo")
+        return recommendations.get(task_type, {}).get(complexity, self.default_openai_model)
     
     def get_usage_stats(self) -> Dict[str, Any]:
         """Restituisce statistiche di utilizzo"""
